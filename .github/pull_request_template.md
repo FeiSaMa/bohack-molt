@@ -26,11 +26,12 @@
 
 ## 验证证据（命令 + 输出）
 
-```bash
-# 必贴
-uv run ruff check .
-PYTHONDONTWRITEBYTECODE=1 uv run python -m molt schema validate --all
-PYTHONDONTWRITEBYTECODE=1 uv run python -m molt scenario validate --scenario scenarios/demo/scenario.json
+实现 session 不得自行运行 pytest。请写出建议的测试命令与覆盖点，由主 session / 集成负责人在集成节点统一串行运行并填写结果。CI 自动测试照常执行。
+
+```text
+建议测试命令：<由实现 session 提供>
+集成负责人测试结果：<由主 session 填写>
+其他适用检查（ruff / schema / scenario）：<命令与结果>
 ```
 
 <!-- 全量 `pytest` 为手动 / 集中执行，不属于 CI，非必贴项。 -->
@@ -52,7 +53,7 @@ PYTHONDONTWRITEBYTECODE=1 uv run python -m molt audit --scenario demo
 
 ## Checklist
 
-- [ ] 测试：新增行为有用例；全量 pytest 手动 / 集中执行，不要求 CI 全绿
+- [ ] 测试：新增行为有用例；建议的测试命令和覆盖点已交给集成负责人，由其统一运行
 - [ ] Schema：`schema validate --all` +
       `scenario validate --scenario scenarios/demo/scenario.json` 通过；`docs/protocol.md` 未手改
 - [ ] 零写入：`git status --porcelain` 为空；`tests/test_zero_write.py` 通过

@@ -121,7 +121,7 @@ run → result → gate_decision → archive → snapshot → event → redactio
 ```bash
 uv sync --extra dev                                  # 装 dev 依赖（pytest / ruff / jsonschema）
 uv run ruff check .                                  # lint（line-length 100）
-uv run pytest -q                                     # 516 passed / 2 skipped；pi 标记默认 skip
+# pytest 不在常用命令中；本地 pytest 由主 session / 集成负责人统一调度
 uv run python -m molt schema validate --all          # 68 条记录通过
 uv run python -m molt scenario validate --scenario scenarios/demo/scenario.json  # validate 的 --scenario 是路径
 # 注意：scenario validate 的 --scenario 是 scenario.json 路径；
@@ -252,9 +252,7 @@ shells/<id>/tools/*.json       # 新增工具声明候选
 
 一次变更合并前必须满足：
 
-- [ ] 测试：新增行为必须带用例；全量 `uv run pytest -q` 为手动 / 集中执行，
-      不属于 CI（CI 只有 `lint`、`schema`、`boundary`、`audit`、`secret-scan` 五个作业），
-      不要求全量套件在 CI 全绿。
+- [ ] 测试：行为变更补对应测试；本地 pytest 只由当前主 session / 集成负责人统一串行运行，其他实现 session 不得自行启动 pytest，也不得并行跑 pytest。实现 session 只需报告建议的定向测试命令与测试覆盖点。集成负责人在集成节点决定并执行一次所需的测试集合，记录结果；CI 自动测试保持不变。
 - [ ] Schema：`molt schema validate --all` 与
       `molt scenario validate --scenario scenarios/demo/scenario.json` 通过；
       `docs/protocol.md` 无手改漂移。
