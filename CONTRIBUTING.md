@@ -6,7 +6,6 @@ molt 的变更流程。契约与禁止清单见 [AGENTS.md](AGENTS.md)，格式�
 
 ```bash
 uv sync --extra dev
-uv run pytest -q
 uv run ruff check .
 ```
 
@@ -60,8 +59,8 @@ feat(shell): 新增 svc-config shell 的三端口实现
 ## 五、测试要求
 
 - 行为变更必须带用例；只写实现不写用例的 PR 不合并。
-- 全量：`PYTHONDONTWRITEBYTECODE=1 uv run pytest -q`，**手动 / 集中执行，不属于 CI**
-  （CI 只有 `lint`、`schema`、`boundary`、`audit`、`secret-scan` 五个作业）；PR 不要求贴全量结果。
+- **本地 pytest 由当前主 session / 集成负责人统一调度并串行运行。** 实现 session 不得自行启动 pytest，不得并行启动全量或定向 pytest；完成实现后报告建议的测试命令、覆盖点与风险，等待集成负责人统一验收。
+- 集成负责人在集成节点选择并运行所需测试集合，避免各 worktree 重复消耗资源；全量 pytest 是否运行由集成负责人按变更范围、风险和时间决定。CI 的自动测试保持不变。
 - 真实 Pi 调用默认跳过（`pytest.mark.pi`），只有设置 `MOLT_RUN_PI_LIVE=1` 才跑，
   且受预算约束；CI 只在手动 `pi-smoke` 工作流里跑。
 - 涉及仓库写入的测试，用文件系统树快照验收，**不要**用 `git status` 代替
@@ -103,9 +102,8 @@ feat(shell): 新增 svc-config shell 的三端口实现
 - [ ] 标注是否触碰 **verifier / scenario_version 构件**（冻结面，见 AGENTS §六）。
 - [ ] **零写入**：`git status --porcelain` 为空；`tests/test_zero_write.py` 通过。
 - [ ] **provenance**：`run.ext.provenance.kind` 与实际一致，fixture 未标 live。
-- [ ] 粘贴验证命令与输出（`ruff`、`schema validate`、
-      `scenario validate --scenario scenarios/demo/scenario.json`）。
-- [ ] 全量 `pytest` 手动 / 集中执行，不属于 CI，非 PR 必贴项。
+- [ ] 记录建议的验证命令；pytest 结果由集成负责人统一填写，禁止实现 session 自行启动。
+- [ ] 记录适用的 `ruff`、`schema validate`、`scenario validate --scenario scenarios/demo/scenario.json` 结果。
 - [ ] 回滚方式：revert 提交 / `molt revert --to <archive_id>` / 重生成导出。
 
 ## 九、CI 期望

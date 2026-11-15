@@ -3,7 +3,7 @@
 **本仓库不是历史仓库。** 它不是 `FeiSaMa/molt` 的历史镜像，也不是一次正常开发的提交记录。
 它是为了让代码可公开评审，按源仓库的最后合并状态**重新构造**出来的快照仓库。
 
-## 一、来源
+## 一、首次快照来源（2026-11-14）
 
 | 项 | 值 |
 | --- | --- |
@@ -56,12 +56,12 @@
 
 ```bash
 git fetch https://github.com/FeiSaMa/bohack-molt.git main:bohack
-git diff --stat a4b40c68 bohack -- . ':(exclude)PROVENANCE.md'   # 应为空
+git diff --stat a4b40c68 b336118 -- . ':(exclude)PROVENANCE.md'   # 应为空
 git rev-parse a4b40c68^{tree}                                   # c53957f2af6f95c60196e38ed25928fd372c96ea
-git rev-parse bohack~1^{tree}                                   # 同上（去掉本文件那一个提交后应完全相等）
+git rev-parse b336118~1^{tree}                                   # 同上（去掉本文件那一个提交后应完全相等）
 ```
 
-本仓库的末提交在上面比对时**只多一个 `PROVENANCE.md`**，其余 657 个文件的路径、内容与
+2026-11-14 的来源说明提交（`b336118`）在上面比对时**只多一个 `PROVENANCE.md`**，其余 657 个文件的路径、内容与
 可执行位都与快照树一致。
 
 ## 五、凭据扫描
@@ -84,3 +84,16 @@ git rev-parse bohack~1^{tree}                                   # 同上（去�
 - 本次发布没有部署任何服务：仓库只包含源码、文档与样例数据。
 - 本仓库遵循源仓库的 `AGENTS.md`、`CONTRIBUTING.md`、`CODEOWNERS` 与许可证约定；
   如需以本仓库为准，以本文件说明的重构关系为准。
+
+## 七、比赛版本归档更新（2026-11-15）
+
+为后续在 `FeiSaMa/molt` 推进 Python + Rust 重构，本仓库追加保存重构前的工作区快照；
+此前的重建历史与逐提交映射完整保留。本次是单次快照同步，不重建源仓库新增提交的历史。
+
+- 源 HEAD：`9de9df651cdf0818669b8035500f0fd8e807d7ba`。
+- 包含源工作区 5 个未提交文件修改，以及展架 PDF / HTML 两个未跟踪文件。
+- 不包含 `.git`、虚拟环境、缓存、被忽略的运行数据、凭据和其他被忽略文件。
+- 文件路径、SHA-256 与可执行位记录见 [`docs/bohack-snapshot.json`](docs/bohack-snapshot.json)。
+  清单中的文件与源工作区逐字节一致；本来源说明与该清单是目标仓库的附加文件。
+- 本次复制未改写源仓库，也没有执行模型调用或重新生成实验数据。
+- 前六节记录的是首次快照的历史说明；其中的文件数、树哈希及扫描结果不代表本次新增快照。
